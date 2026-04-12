@@ -286,7 +286,7 @@ export default function FlightSearch() {
               <ul className="space-y-4 text-sm">
                 <li><button type="button" className="hover:text-blue-400 transition-colors">Popular Routes</button></li>
                 <li><button type="button" className="hover:text-blue-400 transition-colors">Partner Airlines</button></li>
-                <li><Link to="/hotels" className="hover:text-blue-400 transition-colors">Hotels & Stays</Link></li>
+                <li><Link to="/hotels" className="hover:text-blue-400 transition-colors">Hotels &amp; Stays</Link></li>
                 <li><button type="button" className="hover:text-blue-400 transition-colors">Smart Travel Tips</button></li>
               </ul>
             </div>
@@ -317,4 +317,3 @@ export default function FlightSearch() {
     </div>
   );
 }
-
