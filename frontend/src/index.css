@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply text-slate-900 dark:text-slate-100;
+  }
+  body {
+    @apply bg-slate-50 dark:bg-slate-950 transition-colors duration-300;
+  }
+}
+
+.input {
+  @apply border border-slate-200 dark:border-slate-800 p-3 rounded-lg w-full transition-all focus:border-slate-900 dark:focus:border-slate-100 focus:ring-1 focus:ring-gray-900 outline-none bg-white dark:bg-slate-900 dark:text-white placeholder-slate-400;
+}
+
+.btn {
+  @apply bg-slate-900 dark:bg-slate-100 dark:text-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 dark:hover:bg-white transition-colors shadow-sm;
+}
