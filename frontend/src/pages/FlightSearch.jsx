@@ -6,7 +6,16 @@ import FlightCard from "../components/FlightCard";
 /* ─────────────────────────────────────────────
    DATA
  ───────────────────────────────────────────── */
-
+const FEATURED_AIRLINES = [
+  { key: "air_india",        name: "Air India",       iata: "AI", bg: "#E31837", url: "https://images.kiwi.com/airlines/64/AI.png",  tagline: "The Maharaja Experience" },
+  { key: "indigo",           name: "IndiGo",          iata: "6E", bg: "#1A1F71", url: "https://images.kiwi.com/airlines/64/6E.png",  tagline: "On Time, Every Time" },
+  { key: "spicejet",         name: "SpiceJet",        iata: "SG", bg: "#E8231A", url: "https://images.kiwi.com/airlines/64/SG.png",  tagline: "Red Hot Fares" },
+  { key: "vistara",          name: "Vistara",         iata: "UK", bg: "#5C2D91", url: "https://images.kiwi.com/airlines/64/UK.png",  tagline: "Fly the New Feeling" },
+  { key: "akasa",            name: "Akasa Air",       iata: "QP", bg: "#FF6B00", url: "https://images.kiwi.com/airlines/64/QP.png",  tagline: "Low Cost, High Comfort" },
+  { key: "airasia",          name: "AirAsia India",   iata: "I5", bg: "#FF0000", url: "https://images.kiwi.com/airlines/64/I5.png",  tagline: "Now Everyone Can Fly" },
+  { key: "air_india_express",name: "AI Express",      iata: "IX", bg: "#C01A2B", url: "https://images.kiwi.com/airlines/64/IX.png",  tagline: "Value International Flying" },
+  { key: "goair",            name: "GoFirst",         iata: "G8", bg: "#0E4194", url: "https://images.kiwi.com/airlines/64/G8.png",  tagline: "Budget Bliss" },
+];
 
 const POPULAR_ROUTES = [
   { from: "Delhi",   to: "Mumbai",    img: "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=500&q=80", duration: "2h 15m", price: "₹3,499", tag: "Most Popular" },
@@ -32,7 +41,12 @@ const WHY_US = [
   ), title: "24/7 Support", desc: "Our team is always on call for you." },
 ];
 
-
+const TRAVEL_TIPS = [
+  { img: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80", tip: "Book 6–8 weeks early for domestic flights to get the best rates." },
+  { img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80", tip: "Travel light — most budget carriers charge for check-in baggage." },
+  { img: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80", tip: "Download the airline app for real-time gate & delay notifications." },
+  { img: "https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&w=800&q=80", tip: "Carry snacks — budget airlines often serve meals at a premium." },
+];
 
 const DESTINATION_IMAGES = [
   { url: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80", title: "Agra" },
@@ -44,7 +58,30 @@ const DESTINATION_IMAGES = [
 /* ─────────────────────────────────────────────
    COMPONENTS
  ───────────────────────────────────────────── */
-
+function AirlineCard({ airline }) {
+  const [imgError, setImgError] = useState(false);
+  return (
+    <div className="flex flex-col items-center p-4 rounded-2xl cursor-pointer group transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
+      <div
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3 overflow-hidden group-hover:scale-110 transition-transform duration-300"
+        style={{
+          background: imgError ? airline.bg : `${airline.bg}14`,
+          border: `2px solid ${airline.bg}33`,
+          boxShadow: `0 4px 14px ${airline.bg}25`,
+          padding: imgError ? 0 : "6px",
+        }}
+      >
+        {!imgError ? (
+          <img src={airline.url} alt={airline.name} className="w-full h-full object-contain" onError={() => setImgError(true)} referrerPolicy="no-referrer" />
+        ) : (
+          <span className="text-white font-bold text-xl">{airline.iata}</span>
+        )}
+      </div>
+      <p className="text-xs font-bold text-gray-800 dark:text-slate-200 text-center leading-tight">{airline.name}</p>
+      <p className="text-[10px] text-gray-400 dark:text-slate-500 mt-1 text-center italic leading-tight">{airline.tagline}</p>
+    </div>
+  );
+}
 
 function RouteCard({ route, onSelect }) {
   const [imgOk, setImgOk] = useState(true);
