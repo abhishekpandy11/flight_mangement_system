@@ -19,12 +19,12 @@ const FEATURED_AIRLINES = [
 ];
 
 const POPULAR_ROUTES = [
-  { from: "Delhi",   to: "Mumbai",    img: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=400&q=80", duration: "2h 15m", price: "₹3,499", tag: "Most Popular" },
-  { from: "Mumbai",  to: "Goa",       img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=400&q=80", duration: "1h 05m", price: "₹3,199", tag: "Beach Escape" },
-  { from: "Delhi",   to: "Bangalore", img: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=400&q=80", duration: "2h 45m", price: "₹5,299", tag: "Tech Hub" },
-  { from: "Mumbai",  to: "Bangalore", img: "https://images.unsplash.com/photo-1580019542155-247062e19ce4?w=400&q=80", duration: "1h 40m", price: "₹4,199", tag: "Business" },
-  { from: "Chennai", to: "Hyderabad", img: "https://images.unsplash.com/photo-1599661046289-e31897846e41?w=400&q=80", duration: "1h 10m", price: "₹2,999", tag: "Quick Hop" },
-  { from: "Kolkata", to: "Delhi",     img: "/kolkata.png", duration: "2h 30m", price: "₹4,799", tag: "Classic Route" },
+  { from: "Delhi",   to: "Mumbai",    img: "https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=500&q=80", duration: "2h 15m", price: "₹3,499", tag: "Most Popular" },
+  { from: "Mumbai",  to: "Goa",       img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500&q=80", duration: "1h 05m", price: "₹3,199", tag: "Beach Escape" },
+  { from: "Delhi",   to: "Bangalore", img: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=500&q=80", duration: "2h 45m", price: "₹5,299", tag: "Tech Hub" },
+  { from: "Mumbai",  to: "Bangalore", img: "https://images.unsplash.com/photo-1580019542155-247062e19ce4?w=500&q=80", duration: "1h 40m", price: "₹4,199", tag: "Business" },
+  { from: "Chennai", to: "Hyderabad", img: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=500&q=80", duration: "1h 10m", price: "₹2,999", tag: "Quick Hop" },
+  { from: "Kolkata", to: "Delhi",     img: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800&auto=format&fit=crop", duration: "2h 30m", price: "₹4,799", tag: "Classic Route" },
 ];
 
 const WHY_US = [
@@ -43,10 +43,17 @@ const WHY_US = [
 ];
 
 const TRAVEL_TIPS = [
-  { img: "https://images.unsplash.com/photo-1435527173128-983b87201f4d?w=400&q=80", tip: "Book 6–8 weeks early for domestic flights to get the best rates." },
-  { img: "https://images.unsplash.com/photo-1551525212-a1dc18bef82c?w=400&q=80", tip: "Travel light — most budget carriers charge for check-in baggage." },
-  { img: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=400&q=80", tip: "Download the airline app for real-time gate & delay notifications." },
-  { img: "https://images.unsplash.com/photo-1512152596508-05e811c7594b?w=400&q=80", tip: "Carry snacks — budget airlines often serve meals at a premium." },
+  { img: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80", tip: "Book 6–8 weeks early for domestic flights to get the best rates." },
+  { img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80", tip: "Travel light — most budget carriers charge for check-in baggage." },
+  { img: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80", tip: "Download the airline app for real-time gate & delay notifications." },
+  { img: "https://images.unsplash.com/photo-1542296332-2e4473faf563?auto=format&fit=crop&w=800&q=80", tip: "Carry snacks — budget airlines often serve meals at a premium." },
+];
+
+const DESTINATION_IMAGES = [
+  { url: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80", title: "Agra" },
+  { url: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=1200&q=80", title: "Goa" },
+  { url: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80", title: "Himachal" },
+  { url: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1200&q=80", title: "Kerala" },
 ];
 
 /* ─────────────────────────────────────────────
@@ -134,6 +141,56 @@ function RouteCard({ route, onSelect }) {
         </span>
       </div>
     </button>
+  );
+}
+
+function DestinationSlideshow() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % DESTINATION_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="mb-12 rounded-[2rem] overflow-hidden relative shadow-xl shadow-slate-200 dark:shadow-none border border-white dark:border-slate-800" style={{ height: 300 }}>
+      {DESTINATION_IMAGES.map((img, i) => (
+        <div
+          key={img.url}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === index ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
+        >
+          <img
+            src={img.url}
+            alt={img.title}
+            className="w-full h-full object-cover transform-gpu"
+          />
+        </div>
+      ))}
+      {/* Reduced Blue Overlay - more natural dark gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/40 to-transparent" />
+      
+      <div className="absolute inset-0 flex flex-col justify-center px-12 z-20">
+        <p className="text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4 animate-in fade-in slide-in-from-left-4 duration-1000">Explore India</p>
+        <h2 className="text-4xl sm:text-5xl font-black text-white mb-6 drop-shadow-2xl leading-tight max-w-xl">
+          Discover 100+ <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Indian Destinations</span>
+        </h2>
+        <p className="text-slate-200 text-sm max-w-md font-medium leading-relaxed opacity-95">
+          From the sun-kissed beaches of Goa to the snow-capped mountains of Himachal — we fly you there in premium comfort.
+        </p>
+        
+        {/* Indicators */}
+        <div className="absolute bottom-8 left-12 flex gap-3">
+          {DESTINATION_IMAGES.map((_, i) => (
+            <div 
+              key={i} 
+              className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-8 bg-blue-500' : 'w-2 bg-white/30'}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -245,7 +302,7 @@ export default function FlightSearch() {
       <div className="relative overflow-hidden" style={{ minHeight: 400 }}>
         {/* Background image */}
         <img
-          src="/hero-bg.png"
+          src="https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&w=1920&q=80"
           alt="Sky"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -511,24 +568,8 @@ export default function FlightSearch() {
               </div>
             </section>
 
-            {/* Destination Image Banner */}
-            <section className="mb-12 rounded-3xl overflow-hidden relative" style={{ height: 260 }}>
-              <img
-                src="/destinations.png"
-                alt="India Destinations"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(15,23,90,0.75) 0%, rgba(37,99,235,0.40) 50%, transparent 100%)" }} />
-              <div className="absolute inset-0 flex flex-col justify-center px-10">
-                <p className="text-white/80 text-xs font-bold uppercase tracking-widest mb-2">Explore India</p>
-                <h2 className="text-3xl font-black text-white mb-3 drop-shadow">
-                  Discover 100+<br />Indian Destinations
-                </h2>
-                <p className="text-blue-100 text-sm max-w-xs">
-                  From the beaches of Goa to the mountains of Himachal — we fly you there.
-                </p>
-              </div>
-            </section>
+            {/* ── Dynamic Destination Image Banner ── */}
+            <DestinationSlideshow />
 
             {/* Why Choose Us */}
             <section className="mb-12">
@@ -563,8 +604,8 @@ export default function FlightSearch() {
                       className="relative rounded-2xl overflow-hidden group min-h-[160px] flex items-end p-4 hover:-translate-y-1 transition-all"
                       style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
                     >
-                      <img src={t.img} alt="tip" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-60" />
-                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,42,0.9) 0%, transparent 100%)" }} />
+                      <img src={t.img} alt="tip" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90" />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.2) 60%, transparent 100%)" }} />
                       <div className="relative z-10 w-full">
                         <p className="text-white text-sm font-medium leading-snug drop-shadow-md">{t.tip}</p>
                       </div>
@@ -576,6 +617,96 @@ export default function FlightSearch() {
           </>
         )}
       </div>
+
+      {/* ── FOOTER ── */}
+      <footer className="bg-slate-900 border-t border-slate-800 pt-16 pb-8 text-slate-300">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            {/* Brand Column */}
+            <div className="col-span-1 md:col-span-1">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 22.5 5 22.5 5c0 0-1 1.5-2.5 3L16.5 11.5l-8 1.8L3.4 18.4l-.4.6 2 .5 3.5-2.5 3.2-1.2 5.5 3.4zM3 21h18"/></svg>
+                </div>
+                <span className="text-xl font-black text-white tracking-tighter italic">SKYROUTE</span>
+              </div>
+              <p className="text-sm leading-relaxed mb-6 text-slate-400">
+                Premium flight booking experience. We search across all major Indian carriers to find you the best deals instantly.
+              </p>
+              <div className="flex gap-4">
+                {/* Instagram */}
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-tr hover:from-purple-600 hover:to-pink-500 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+                {/* Facebook */}
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+                {/* X (Twitter) */}
+                <a href="https://x.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                  </svg>
+                </a>
+                {/* LinkedIn */}
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-blue-700 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"></path>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Links Columns */}
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Explore</h4>
+              <ul className="space-y-4 text-sm">
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Popular Routes</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Partner Airlines</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Hotels & Stays</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Smart Travel Tips</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Support</h4>
+              <ul className="space-y-4 text-sm">
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Booking Guide</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Refund Policy</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact Us</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Legal</h4>
+              <ul className="space-y-4 text-sm">
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Cookie Policy</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Security</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-slate-500">
+              © {new Date().getFullYear()} SkyRoute Management System. All rights reserved.
+            </p>
+            <div className="flex items-center gap-6 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" /> AI Agent Active</span>
+              <span className="flex items-center gap-1.5">🔒 Verified Secure</span>
+            </div>
+          </div>
+        </div>
+      </footer>
 
       {/* Global animation styles */}
       <style>{`
