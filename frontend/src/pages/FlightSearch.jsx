@@ -180,9 +180,12 @@ export default function FlightSearch() {
   // Auto-focus source on mount
   useEffect(() => { sourceRef.current?.focus(); }, []);
 
+  // Enhanced swap using functional state updates to avoid React async closure bugs
   const swap = () => {
-    setSource(destination);
-    setDestination(source);
+    setSource((prevSource) => {
+      setDestination(prevSource);
+      return destination;
+    });
   };
 
   const searchFlights = async () => {
