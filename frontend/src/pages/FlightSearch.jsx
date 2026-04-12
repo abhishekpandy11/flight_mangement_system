@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import API from "../api/axios";
 import FlightCard from "../components/FlightCard";
 
 /* ─────────────────────────────────────────────
    DATA
 ───────────────────────────────────────────── */
-// Kiwi.com CDN serves airline logos reliably by IATA code — no CORS issues
 const FEATURED_AIRLINES = [
   { key: "air_india",        name: "Air India",       iata: "AI", bg: "#E31837", url: "https://images.kiwi.com/airlines/64/AI.png",  tagline: "The Maharaja Experience" },
   { key: "indigo",           name: "IndiGo",          iata: "6E", bg: "#1A1F71", url: "https://images.kiwi.com/airlines/64/6E.png",  tagline: "On Time, Every Time" },
@@ -59,13 +58,10 @@ const DESTINATION_IMAGES = [
 /* ─────────────────────────────────────────────
    COMPONENTS
 ───────────────────────────────────────────── */
-
 function AirlineCard({ airline }) {
   const [imgError, setImgError] = useState(false);
   return (
-    <div
-      className="flex flex-col items-center p-4 rounded-2xl cursor-pointer group transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm"
-    >
+    <div className="flex flex-col items-center p-4 rounded-2xl cursor-pointer group transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
       <div
         className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3 overflow-hidden group-hover:scale-110 transition-transform duration-300"
         style={{
@@ -76,13 +72,7 @@ function AirlineCard({ airline }) {
         }}
       >
         {!imgError ? (
-          <img
-            src={airline.url}
-            alt={airline.name}
-            className="w-full h-full object-contain"
-            onError={() => setImgError(true)}
-            referrerPolicy="no-referrer"
-          />
+          <img src={airline.url} alt={airline.name} className="w-full h-full object-contain" onError={() => setImgError(true)} referrerPolicy="no-referrer" />
         ) : (
           <span className="text-white font-bold text-xl">{airline.iata}</span>
         )}
@@ -101,44 +91,26 @@ function RouteCard({ route, onSelect }) {
       className="relative group rounded-3xl overflow-hidden text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none border border-gray-200 dark:border-slate-800"
       style={{ height: 180 }}
     >
-      {/* Background image */}
       {imgOk ? (
-        <img
-          src={route.img}
-          alt={`${route.from} to ${route.to}`}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          onError={() => setImgOk(false)}
-        />
+        <img src={route.img} alt={`${route.from} to ${route.to}`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onError={() => setImgOk(false)} />
       ) : (
         <div className="absolute inset-0" style={{ background: "linear-gradient(135deg,#1e3a8a,#2563eb)" }} />
       )}
-
-      {/* Gradient overlay */}
       <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 60%, transparent 100%)" }} />
-
-      {/* Tag badge */}
       <div className="absolute top-3 right-3">
         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style={{ background: "rgba(255,255,255,0.25)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.3)" }}>
           {route.tag}
         </span>
       </div>
-
-      {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="text-white font-extrabold text-base leading-tight drop-shadow">
-          {route.from} → {route.to}
-        </p>
+        <p className="text-white font-extrabold text-base leading-tight drop-shadow">{route.from} → {route.to}</p>
         <div className="flex items-center gap-3 mt-1">
           <span className="text-xs text-white/80 font-medium">⏱ {route.duration}</span>
           <span className="text-xs font-bold text-amber-300">from {route.price}</span>
         </div>
       </div>
-
-      {/* Hover CTA */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <span className="px-5 py-2 rounded-xl text-sm font-bold text-white" style={{ background: "rgba(37,99,235,0.85)", backdropFilter: "blur(8px)" }}>
-          Search Flights →
-        </span>
+        <span className="px-5 py-2 rounded-xl text-sm font-bold text-white" style={{ background: "rgba(37,99,235,0.85)", backdropFilter: "blur(8px)" }}>Search Flights →</span>
       </div>
     </button>
   );
@@ -146,47 +118,27 @@ function RouteCard({ route, onSelect }) {
 
 function DestinationSlideshow() {
   const [index, setIndex] = useState(0);
-
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % DESTINATION_IMAGES.length);
-    }, 5000);
+    const timer = setInterval(() => { setIndex((prev) => (prev + 1) % DESTINATION_IMAGES.length); }, 5000);
     return () => clearInterval(timer);
   }, []);
-
   return (
     <section className="mb-12 rounded-[2rem] overflow-hidden relative shadow-xl shadow-slate-200 dark:shadow-none border border-white dark:border-slate-800" style={{ height: 300 }}>
       {DESTINATION_IMAGES.map((img, i) => (
-        <div
-          key={img.url}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === index ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}
-        >
-          <img
-            src={img.url}
-            alt={img.title}
-            className="w-full h-full object-cover transform-gpu"
-          />
+        <div key={img.url} className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${i === index ? 'opacity-100 scale-100' : 'opacity-0 scale-110'}`}>
+          <img src={img.url} alt={img.title} className="w-full h-full object-cover transform-gpu" />
         </div>
       ))}
-      {/* Reduced Blue Overlay - more natural dark gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-900/40 to-transparent" />
-      
       <div className="absolute inset-0 flex flex-col justify-center px-12 z-20">
-        <p className="text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4 animate-in fade-in slide-in-from-left-4 duration-1000">Explore India</p>
+        <p className="text-blue-400 text-[10px] font-black uppercase tracking-[0.4em] mb-4">Explore India</p>
         <h2 className="text-4xl sm:text-5xl font-black text-white mb-6 drop-shadow-2xl leading-tight max-w-xl">
           Discover 100+ <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">Indian Destinations</span>
         </h2>
-        <p className="text-slate-200 text-sm max-w-md font-medium leading-relaxed opacity-95">
-          From the sun-kissed beaches of Goa to the snow-capped mountains of Himachal — we fly you there in premium comfort.
-        </p>
-        
-        {/* Indicators */}
+        <p className="text-slate-200 text-sm max-w-md font-medium leading-relaxed opacity-95">From Goa beaches to Himachal mountains &mdash; we fly you there in premium comfort.</p>
         <div className="absolute bottom-8 left-12 flex gap-3">
           {DESTINATION_IMAGES.map((_, i) => (
-            <div 
-              key={i} 
-              className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-8 bg-blue-500' : 'w-2 bg-white/30'}`}
-            />
+            <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-8 bg-blue-500' : 'w-2 bg-white/30'}`} />
           ))}
         </div>
       </div>
@@ -194,22 +146,17 @@ function DestinationSlideshow() {
   );
 }
 
-/* Search result stats bar */
 function StatsBar({ count, source, destination, onClear }) {
   return (
     <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-2xl px-5 py-4 shadow-sm border border-gray-100 dark:border-slate-800 mb-6 transition-colors">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-extrabold text-lg">
-          {count}
-        </div>
+        <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-center justify-center text-blue-600 dark:text-blue-400 font-extrabold text-lg">{count}</div>
         <div>
           <p className="font-bold text-gray-800 dark:text-white text-sm">Flights Found</p>
           <p className="text-xs text-gray-500 dark:text-slate-400">{source} → {destination}</p>
         </div>
       </div>
-      <button onClick={onClear} className="text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold flex items-center gap-1 transition-colors">
-        ← New Search
-      </button>
+      <button onClick={onClear} className="text-sm text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-semibold flex items-center gap-1 transition-colors">← New Search</button>
     </div>
   );
 }
@@ -218,506 +165,155 @@ function StatsBar({ count, source, destination, onClear }) {
    MAIN PAGE
 ───────────────────────────────────────────── */
 export default function FlightSearch() {
-  const navigate                      = useNavigate();
-  const [source, setSource]           = useState("");
+  const navigate = useNavigate();
+  const [source, setSource] = useState("");
   const [destination, setDestination] = useState("");
-  const [flights, setFlights]         = useState([]);
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState("");
-  const [searched, setSearched]       = useState(false);
-  const [activeTab, setActiveTab]     = useState("flights"); // flights | hotels
-  const sourceRef     = useRef(null);
-  const searchCardRef = useRef(null); // used to scroll-into-view when route card clicked
+  const [flights, setFlights] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [searched, setSearched] = useState(false);
+  const [activeTab, setActiveTab] = useState("flights");
+  const sourceRef = useRef(null);
+  const searchCardRef = useRef(null);
 
-  // Shuffle popular routes dynamically on component mount
-  const shuffledRoutes = useMemo(() => {
-    return [...POPULAR_ROUTES].sort(() => 0.5 - Math.random());
-  }, []);
-
-  // Auto-focus source on mount
+  const shuffledRoutes = useMemo(() => [...POPULAR_ROUTES].sort(() => 0.5 - Math.random()), []);
   useEffect(() => { sourceRef.current?.focus(); }, []);
 
-  const swap = () => {
-    setSource(destination);
-    setDestination(source);
-  };
+  const swap = () => { const s = source; setSource(destination); setDestination(s); };
 
   const searchFlights = async () => {
-    if (!source.trim() || !destination.trim()) {
-      setError("Please enter both source and destination.");
-      return;
-    }
+    if (!source.trim() || !destination.trim()) { setError("Please enter both source and destination."); return; }
     try {
-      setLoading(true);
-      setError("");
-      setSearched(true);
+      setLoading(true); setError(""); setSearched(true);
       const res = await API.get("/flights/search", { params: { source, destination } });
       const data = res.data;
       const list = Array.isArray(data) ? data : data.flights || [];
       setFlights(list.slice(0, 10));
-    } catch {
-      setError("Failed to fetch flights. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    } catch { setError("Failed to fetch flights. Please try again."); }
+    finally { setLoading(false); }
   };
 
-  const clearSearch = () => {
-    setSearched(false);
-    setFlights([]);
-    setSource("");
-    setDestination("");
-    setError("");
-  };
+  const clearSearch = () => { setSearched(false); setFlights([]); setSource(""); setDestination(""); setError(""); };
 
   const handleRouteSelect = (from, to) => {
-    setSource(from);
-    setDestination(to);
-    setError("");
-    // Scroll to the very top smoothly
+    setSource(from); setDestination(to); setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
-    
-    // Small delay so state updates propagate before search fires
     setTimeout(() => {
       if (from.trim() && to.trim()) {
-        setLoading(true);
-        setError("");
-        setSearched(true);
+        setLoading(true); setError(""); setSearched(true);
         API.get("/flights/search", { params: { source: from, destination: to } })
-          .then((res) => {
-            const data = res.data;
-            const list = Array.isArray(data) ? data : data.flights || [];
-            setFlights(list.slice(0, 10));
-          })
-          .catch(() => setError("Failed to fetch flights. Please try again."))
+          .then((res) => { const data = res.data; setFlights((Array.isArray(data) ? data : data.flights || []).slice(0, 10)); })
+          .catch(() => setError("Failed to fetch flights."))
           .finally(() => setLoading(false));
       }
-    }, 500); // give enough time for the smooth scroll
+    }, 500);
   };
 
   return (
     <div className="min-h-screen pb-12 transition-colors duration-300 bg-slate-50 dark:bg-slate-950">
-
-      {/* ── HERO ── */}
       <div className="relative overflow-hidden" style={{ minHeight: 400 }}>
-        {/* Background image */}
-        <img
-          src="https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&w=1920&q=80"
-          alt="Sky"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        {/* Gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.1) 40%, rgba(15,23,42,0.5) 100%)" }}
-        />
-
-        {/* Content */}
+        <img src="https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&w=1920&q=80" alt="Sky" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.1) 40%, rgba(15,23,42,0.5) 100%)" }} />
         <div className="relative z-10 max-w-4xl mx-auto px-4 pt-20 pb-12">
-
-          {/* Headline */}
           <div className="text-center mb-10">
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4 drop-shadow-md">
-              Find Your Perfect{" "}
-              <span className="text-blue-400">Flight</span>
-            </h1>
-            <p className="text-slate-300 text-lg max-w-lg mx-auto font-light">
-              Search across Top Airlines &mdash; real-time availability, best fares, and instant booking.
-            </p>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-4 drop-shadow-md">Find Your Perfect <span className="text-blue-400">Flight</span></h1>
+            <p className="text-slate-300 text-lg max-w-lg mx-auto font-light">Search across Top Airlines &mdash; best fares and instant booking.</p>
           </div>
-
-          {/* Tab switcher */}
           <div className="flex justify-center mb-6">
-            <div className="inline-flex rounded-full p-1.5 gap-1 bg-slate-800/40 dark:bg-slate-900/60 backdrop-blur-md border border-slate-700/30 dark:border-slate-800/50">
+            <div className="inline-flex rounded-full p-1.5 gap-1 bg-slate-800/40 dark:bg-slate-900/60 backdrop-blur-md border border-slate-700/30">
               {["flights", "hotels"].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => {
-                    setActiveTab(tab);
-                    if (tab === "hotels") navigate("/hotels");
-                  }}
-                  className={`px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                    activeTab === tab
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-500/25"
-                      : "text-slate-300 hover:text-white"
-                  }`}
-                >
+                <button key={tab} onClick={() => { setActiveTab(tab); if (tab === "hotels") navigate("/hotels"); }} className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === tab ? "bg-blue-600 text-white shadow-md shadow-blue-500/25" : "text-slate-300 hover:text-white"}`}>
                   {tab === "flights" ? "Flights" : "Hotels"}
                 </button>
               ))}
             </div>
           </div>
-
-          {/* ── Search Card ── */}
           <div ref={searchCardRef} className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl p-5 sm:p-6 border border-white/60 dark:border-slate-800/50">
             <div className="flex flex-col sm:flex-row gap-3 items-stretch">
-
-              {/* From */}
               <div className="flex-1 relative group">
-                <label className="block text-[11px] font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-widest mb-1.5 ml-1">From</label>
-                <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">
-                     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                  </div>
-                  <input
-                    ref={sourceRef}
-                    id="search-from"
-                    placeholder="Departure city…"
-                    value={source}
-                    onChange={(e) => setSource(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && searchFlights()}
-                    className="w-full border border-gray-200 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-800 dark:focus:border-blue-500 transition-colors bg-gray-50/50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-950"
-                  />
-                </div>
+                <label className="block text-[11px] font-semibold text-gray-500 dark:text-slate-400 uppercase mb-1.5 ml-1">From</label>
+                <input ref={sourceRef} id="search-from" placeholder="Departure city…" value={source} onChange={(e) => setSource(e.target.value)} onKeyDown={(e) => e.key === "Enter" && searchFlights()} className="w-full border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 dark:text-white focus:outline-none bg-gray-50/50 dark:bg-slate-950" />
               </div>
-
-              {/* Swap button */}
-              <div className="flex items-end justify-center pb-0.5">
-                <button
-                  onClick={swap}
-                  title="Swap cities"
-                  className="w-10 h-10 rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-950 hover:bg-blue-50 dark:hover:bg-slate-800 hover:border-blue-200 dark:hover:border-slate-700 flex items-center justify-center transition-all duration-200 text-gray-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 active:scale-90"
-                  style={{ marginTop: 18 }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* To */}
+              <div className="flex items-end justify-center pb-0.5"><button onClick={swap} className="w-10 h-10 rounded-xl border border-gray-200 dark:border-slate-800 flex items-center justify-center transition-all active:scale-90" style={{ marginTop: 18 }}>⇄</button></div>
               <div className="flex-1 relative group">
-                <label className="block text-[11px] font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-widest mb-1.5 ml-1">To</label>
-                <div className="relative">
-                  <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">
-                     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>
-                  </div>
-                  <input
-                    id="search-to"
-                    placeholder="Arrival city…"
-                    value={destination}
-                    onChange={(e) => setDestination(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && searchFlights()}
-                    className="w-full border border-gray-200 dark:border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm font-medium text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:border-slate-800 dark:focus:border-blue-500 transition-colors bg-gray-50/50 dark:bg-slate-950 focus:bg-white dark:focus:bg-slate-950"
-                  />
-                </div>
+                <label className="block text-[11px] font-semibold text-gray-500 dark:text-slate-400 uppercase mb-1.5 ml-1">To</label>
+                <input id="search-to" placeholder="Arrival city…" value={destination} onChange={(e) => setDestination(e.target.value)} onKeyDown={(e) => e.key === "Enter" && searchFlights()} className="w-full border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-3 text-sm font-medium text-gray-900 dark:text-white focus:outline-none bg-gray-50/50 dark:bg-slate-950" />
               </div>
-
-              {/* Search button */}
-              <div className="flex items-end">
-                <button
-                  id="search-flights-btn"
-                  onClick={searchFlights}
-                  disabled={loading}
-                  className="w-full sm:w-auto whitespace-nowrap text-sm font-extrabold text-white px-8 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 active:scale-95 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-                  style={{ background: "linear-gradient(135deg, #2563eb, #1d4ed8)", marginTop: 22 }}
-                >
-                  {loading ? (
-                    <span className="flex items-center gap-2">
-                       <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" /></svg>
-                      Searching
-                    </span>
-                  ) : (
-                    "Search Flights"
-                  )}
-                </button>
-              </div>
+              <div className="flex items-end"><button onClick={searchFlights} disabled={loading} className="w-full sm:w-auto whitespace-nowrap text-sm font-extrabold text-white px-8 py-3 rounded-xl transition-all disabled:opacity-50 active:scale-95 shadow-lg" style={{ background: "linear-gradient(135deg, #2563eb, #1d4ed8)", marginTop: 22 }}>Search Flights</button></div>
             </div>
-
-            {/* Error */}
-            {error && (
-              <p className="text-red-500 text-sm mt-3 flex items-center gap-1.5 font-medium">
-                <span>⚠️</span> {error}
-              </p>
-            )}
-
-            {/* Quick city pills */}
-            {!searched && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-xs text-gray-400 dark:text-slate-500 font-medium self-center">Popular:</span>
-                {["Delhi", "Mumbai", "Bangalore", "Goa", "Hyderabad", "Chennai"].map((city) => (
-                  <button
-                    key={city}
-                    onClick={() => !source ? setSource(city) : setDestination(city)}
-                    className="text-xs px-3 py-1 rounded-full border border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-800 transition-all duration-150 font-medium"
-                  >
-                    {city}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Trust badges */}
-          <div className="flex flex-wrap justify-center gap-4 mt-5 text-xs text-white/70 font-medium">
-            {["🔒 Secure Payment", "✅ 8 Airlines", "⚡ Instant Booking", "🎧 24/7 Support"].map((b) => (
-              <span key={b}>{b}</span>
-            ))}
+            {error && <p className="text-red-500 text-sm mt-3 font-medium">⚠️ {error}</p>}
           </div>
         </div>
       </div>
 
-      {/* ── MAIN CONTENT ── */}
       <div className="max-w-4xl mx-auto px-4 pb-20 mt-8">
-
-        {/* ── SEARCH RESULTS ── */}
         {searched && (
           <>
             <StatsBar count={loading ? "…" : flights.length} source={source} destination={destination} onClear={clearSearch} />
-
-            {/* Loading skeleton */}
-            {loading && (
-              <div className="space-y-4">
-                {[1, 2, 3].map((i) => (
-                  <div key={i} className="bg-white rounded-3xl p-5 border border-gray-100 animate-pulse">
-                    <div className="flex gap-4 mb-4">
-                      <div className="w-16 h-16 rounded-2xl bg-gray-100" />
-                      <div className="flex-1 space-y-2 pt-1">
-                        <div className="h-4 bg-gray-100 rounded-lg w-1/3" />
-                        <div className="h-3 bg-gray-100 rounded-lg w-1/4" />
-                      </div>
-                      <div className="h-8 w-24 bg-gray-100 rounded-xl" />
-                    </div>
-                    <div className="h-16 bg-gray-50 rounded-2xl" />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* No results */}
             {!loading && flights.length === 0 && !error && (
               <div className="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                <div className="text-gray-300 mb-4">
-                  <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                </div>
                 <h2 className="text-xl font-bold text-gray-700 mb-2">No Flights Found</h2>
-                <p className="text-gray-400 text-sm mb-6">Try different city names or check the spelling.</p>
-                <button onClick={clearSearch} className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 shadow-md text-sm">
-                  ← Try Again
-                </button>
+                <button onClick={clearSearch} className="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-xl">← Try Again</button>
               </div>
             )}
-
-            {/* Flight cards */}
-            {!loading && flights.length > 0 && (
-              <div>
-                {/* Sort/filter bar */}
-                <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-1">
-                  <span className="text-xs font-bold text-gray-500 whitespace-nowrap">Sort by:</span>
-                  {["Price ↑", "Duration", "Departure"].map((f) => (
-                    <button key={f} className="text-xs px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50 transition-all whitespace-nowrap font-medium">
-                      {f}
-                    </button>
-                  ))}
-                </div>
-                {flights.map((f, i) => (
-                  <FlightCard key={`${f.flight_number}-${i}`} flight={f} />
-                ))}
-              </div>
-            )}
+            {flights.map((f, i) => <FlightCard key={i} flight={f} />)}
           </>
         )}
-
-        {/* ── PRE-SEARCH CONTENT ── */}
         {!searched && (
           <>
-            {/* Popular Routes */}
             <section className="mb-12">
-              <div className="flex items-center justify-between mb-5">
-                <div>
-                  <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Popular Routes</h2>
-                  <p className="text-gray-400 dark:text-slate-500 text-sm mt-0.5">Click any card to auto-fill your search</p>
-                </div>
-                <span className="text-[10px] uppercase tracking-widest bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-bold px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-800">
-                  Trending
-                </span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {shuffledRoutes.map((route) => (
-                  <RouteCard
-                    key={`${route.from}-${route.to}`}
-                    route={route}
-                    onSelect={handleRouteSelect}
-                  />
-                ))}
-              </div>
+              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-5">Popular Routes</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">{shuffledRoutes.map((route) => <RouteCard key={`${route.from}-${route.to}`} route={route} onSelect={handleRouteSelect} />)}</div>
             </section>
-
-            {/* Airline Partner Showcase */}
-            <section className="mb-12 overflow-hidden relative">
-              <div className="flex items-center justify-between mb-5">
-                <div>
-                  <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Partner Airlines</h2>
-                  <p className="text-gray-400 dark:text-slate-500 text-sm mt-0.5">We search across all major Indian carriers</p>
-                </div>
-                <span className="text-xs bg-blue-50 dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-bold px-3 py-1.5 rounded-full border border-blue-100 dark:border-slate-800">
-                  8 Airlines
-                </span>
-              </div>
-              <div 
-                className="relative w-full flex overflow-hidden py-4"
-                style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}
-              >
-                <div className="flex gap-4 animate-scroll-x w-max hover:[animation-play-state:paused]">
-                  {[...FEATURED_AIRLINES, ...FEATURED_AIRLINES, ...FEATURED_AIRLINES].map((a, i) => (
-                    <div key={`${a.key}-${i}`} className="w-32 sm:w-40 flex-shrink-0">
-                      <AirlineCard airline={a} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
-
-            {/* ── Dynamic Destination Image Banner ── */}
             <DestinationSlideshow />
-
-            {/* Why Choose Us */}
             <section className="mb-12">
               <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-5">Why Book With Us?</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {WHY_US.map((w) => (
-                  <div
-                    key={w.title}
-                    className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-100 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 text-center text-gray-800 dark:text-slate-100"
-                  >
-                    <div className="text-3xl mb-3">{w.icon}</div>
-                    <p className="font-bold text-gray-800 dark:text-white text-sm mb-1">{w.title}</p>
-                    <p className="text-gray-400 dark:text-slate-500 text-xs leading-snug">{w.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Travel Tips */}
-            <section className="mb-4">
-              <div
-                className="rounded-3xl p-6 sm:p-8 shadow-xl"
-                style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)" }}
-              >
-                <h2 className="text-xl font-extrabold text-white mb-5 flex items-center gap-2">
-                  Smart Travel Tips
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {TRAVEL_TIPS.map((t, i) => (
-                    <div
-                      key={i}
-                      className="relative rounded-2xl overflow-hidden group min-h-[160px] flex items-end p-4 hover:-translate-y-1 transition-all"
-                      style={{ boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}
-                    >
-                      <img src={t.img} alt="tip" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90" />
-                      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.2) 60%, transparent 100%)" }} />
-                      <div className="relative z-10 w-full">
-                        <p className="text-white text-sm font-medium leading-snug drop-shadow-md">{t.tip}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">{WHY_US.map((w) => <div key={w.title} className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-gray-100 dark:border-slate-800 shadow-sm text-center"><p className="font-bold text-gray-800 dark:text-white text-sm mb-1">{w.title}</p><p className="text-gray-400 text-xs">{w.desc}</p></div>)}</div>
             </section>
           </>
         )}
       </div>
 
-      {/* ── FOOTER ── */}
       <footer className="bg-slate-900 border-t border-slate-800 pt-16 pb-8 text-slate-300">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            {/* Brand Column */}
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/20">
-                  <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 22.5 5 22.5 5c0 0-1 1.5-2.5 3L16.5 11.5l-8 1.8L3.4 18.4l-.4.6 2 .5 3.5-2.5 3.2-1.2 5.5 3.4zM3 21h18"/></svg>
-                </div>
-                <span className="text-xl font-black text-white tracking-tighter italic">SKYROUTE</span>
-              </div>
-              <p className="text-sm leading-relaxed mb-6 text-slate-400">
-                Premium flight booking experience. We search across all major Indian carriers to find you the best deals instantly.
-              </p>
-              <div className="flex gap-4">
-                {/* Instagram */}
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-gradient-to-tr hover:from-purple-600 hover:to-pink-500 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
-                </a>
-                {/* Facebook */}
-                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                  </svg>
-                </a>
-                {/* X (Twitter) */}
-                <a href="https://x.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                  </svg>
-                </a>
-                {/* LinkedIn */}
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-blue-700 text-slate-400 hover:text-white transition-all duration-300 flex items-center justify-center border border-white/5 active:scale-90">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"></path>
-                    <circle cx="4" cy="4" r="2"></circle>
-                  </svg>
-                </a>
-              </div>
+            <div className="col-span-1">
+              <span className="text-xl font-black text-white italic">SKYROUTE</span>
+              <p className="text-sm leading-relaxed mb-6 text-slate-400 mt-4">Premium flight booking experience across all major Indian carriers.</p>
             </div>
-
-            {/* Links Columns */}
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Explore</h4>
               <ul className="space-y-4 text-sm">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Popular Routes</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Partner Airlines</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Hotels & Stays</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Smart Travel Tips</a></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Popular Routes</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Partner Airlines</Link></li>
+                <li><Link to="/hotels" className="hover:text-blue-400 transition-colors">Hotels & Stays</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Smart Travel Tips</Link></li>
               </ul>
             </div>
-
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Support</h4>
               <ul className="space-y-4 text-sm">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Booking Guide</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Refund Policy</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact Us</a></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Help Center</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Booking Guide</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Refund Policy</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Contact Us</Link></li>
               </ul>
             </div>
-
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Legal</h4>
               <ul className="space-y-4 text-sm">
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Cookie Policy</a></li>
-                <li><a href="#" className="hover:text-blue-400 transition-colors">Security</a></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
+                <li><Link to="/" className="hover:text-blue-400 transition-colors">Security</Link></li>
               </ul>
             </div>
           </div>
-
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-slate-500">
-              © {new Date().getFullYear()} SkyRoute Management System. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6 text-xs text-slate-500">
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" /> AI Agent Active</span>
-              <span className="flex items-center gap-1.5">🔒 Verified Secure</span>
-            </div>
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+            <p>© {new Date().getFullYear()} SkyRoute Management System. All rights reserved.</p>
           </div>
         </div>
       </footer>
-
-      {/* Global animation styles */}
-      <style>{`
-        @keyframes scroll-x {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-33.333% - 5.33px)); }
-        }
-        .animate-scroll-x {
-          animation: scroll-x 80s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }
