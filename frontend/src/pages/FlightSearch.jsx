@@ -5,7 +5,7 @@ import FlightCard from "../components/FlightCard";
 
 /* ─────────────────────────────────────────────
    DATA
-───────────────────────────────────────────── */
+ ───────────────────────────────────────────── */
 const FEATURED_AIRLINES = [
   { key: "air_india",        name: "Air India",       iata: "AI", bg: "#E31837", url: "https://images.kiwi.com/airlines/64/AI.png",  tagline: "The Maharaja Experience" },
   { key: "indigo",           name: "IndiGo",          iata: "6E", bg: "#1A1F71", url: "https://images.kiwi.com/airlines/64/6E.png",  tagline: "On Time, Every Time" },
@@ -57,7 +57,7 @@ const DESTINATION_IMAGES = [
 
 /* ─────────────────────────────────────────────
    COMPONENTS
-───────────────────────────────────────────── */
+ ───────────────────────────────────────────── */
 function AirlineCard({ airline }) {
   const [imgError, setImgError] = useState(false);
   return (
@@ -163,7 +163,7 @@ function StatsBar({ count, source, destination, onClear }) {
 
 /* ─────────────────────────────────────────────
    MAIN PAGE
-───────────────────────────────────────────── */
+ ───────────────────────────────────────────── */
 export default function FlightSearch() {
   const navigate = useNavigate();
   const [source, setSource] = useState("");
@@ -317,3 +317,4 @@ export default function FlightSearch() {
     </div>
   );
 }
+
