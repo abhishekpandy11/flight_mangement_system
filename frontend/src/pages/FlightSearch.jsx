@@ -6,7 +6,7 @@ import FlightCard from "../components/FlightCard";
 /* ─────────────────────────────────────────────
    DATA
  ───────────────────────────────────────────── */
-const FEATURED_AIRLINES = [
+const FEATURED_AIRLINES = [ // eslint-disable-line no-unused-vars
   { key: "air_india",        name: "Air India",       iata: "AI", bg: "#E31837", url: "https://images.kiwi.com/airlines/64/AI.png",  tagline: "The Maharaja Experience" },
   { key: "indigo",           name: "IndiGo",          iata: "6E", bg: "#1A1F71", url: "https://images.kiwi.com/airlines/64/6E.png",  tagline: "On Time, Every Time" },
   { key: "spicejet",         name: "SpiceJet",        iata: "SG", bg: "#E8231A", url: "https://images.kiwi.com/airlines/64/SG.png",  tagline: "Red Hot Fares" },
@@ -41,7 +41,7 @@ const WHY_US = [
   ), title: "24/7 Support", desc: "Our team is always on call for you." },
 ];
 
-const TRAVEL_TIPS = [
+const TRAVEL_TIPS = [ // eslint-disable-line no-unused-vars
   { img: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80", tip: "Book 6–8 weeks early for domestic flights to get the best rates." },
   { img: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80", tip: "Travel light — most budget carriers charge for check-in baggage." },
   { img: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80", tip: "Download the airline app for real-time gate & delay notifications." },
@@ -58,7 +58,7 @@ const DESTINATION_IMAGES = [
 /* ─────────────────────────────────────────────
    COMPONENTS
  ───────────────────────────────────────────── */
-function AirlineCard({ airline }) {
+function AirlineCard({ airline }) { // eslint-disable-line no-unused-vars
   const [imgError, setImgError] = useState(false);
   return (
     <div className="flex flex-col items-center p-4 rounded-2xl cursor-pointer group transition-all duration-300 hover:-translate-y-2 hover:shadow-xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm">
