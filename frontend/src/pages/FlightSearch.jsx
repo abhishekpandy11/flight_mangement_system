@@ -169,7 +169,6 @@ export default function FlightSearch() {
   const [error, setError]             = useState("");
   const [searched, setSearched]       = useState(false);
   const [activeTab, setActiveTab]     = useState("flights"); // flights | hotels
-  const [swapped, setSwapped]         = useState(false);
   const sourceRef     = useRef(null);
   const searchCardRef = useRef(null); // used to scroll-into-view when route card clicked
 
@@ -184,7 +183,6 @@ export default function FlightSearch() {
   const swap = () => {
     setSource(destination);
     setDestination(source);
-    setSwapped(s => !s);
   };
 
   const searchFlights = async () => {
