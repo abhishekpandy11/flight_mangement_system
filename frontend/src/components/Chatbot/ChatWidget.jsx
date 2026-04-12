@@ -74,6 +74,22 @@ const ChatWidget = () => {
     }
   };
 
+  const [loadingStatus, setLoadingStatus] = useState('SkyRoute Assistant is thinking');
+
+  useEffect(() => {
+    if (loading) {
+      const statuses = ['Searching flights...', 'Analyzing available seats...', 'Checking best routes...', 'Almost there...', 'Finalizing response...'];
+      let idx = 0;
+      const interval = setInterval(() => {
+        setLoadingStatus(statuses[idx % statuses.length]);
+        idx++;
+      }, 1500);
+      return () => clearInterval(interval);
+    } else {
+      setLoadingStatus('SkyRoute Assistant is thinking');
+    }
+  }, [loading]);
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Chat Window */}
@@ -84,17 +100,22 @@ const ChatWidget = () => {
             <div>
               <h3 className="font-bold text-lg">SkyRoute Assistant</h3>
               <p className="text-xs text-blue-100 flex items-center">
-                {status === 'waiting_for_human' ? (
-                  <>
-                    <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
-                    Human Escalated
-                  </>
-                ) : (
-                  <>
-                    <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                    Always active
-                  </>
-                )}
+              {loading ? (
+                <span className="flex items-center text-blue-100 animate-pulse font-medium">
+                  <span className="w-1.5 h-1.5 bg-white rounded-full mr-2"></span>
+                  Assistant is typing...
+                </span>
+              ) : status === 'waiting_for_human' ? (
+                <>
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></span>
+                  Human Escalated
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                  Always active
+                </>
+              )}
               </p>
             </div>
             <button 
@@ -113,14 +134,36 @@ const ChatWidget = () => {
               <ChatMessage key={index} message={msg} />
             ))}
             {loading && (
-              <div className="flex justify-start mb-4">
-                <div className="bg-slate-100 dark:bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm border border-slate-200 dark:border-slate-700">
-                  <div className="flex space-x-1">
-                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></div>
-                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                    <div className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+              <div className="flex justify-start mb-6 group">
+                <div className="relative">
+                  <div className="bg-white dark:bg-slate-800 rounded-2xl rounded-tl-none px-5 py-4 shadow-lg border border-slate-200 dark:border-slate-700 flex flex-col gap-2">
+                    <div className="flex items-center gap-3">
+                      <div className="flex space-x-1.5">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse [animation-delay:0.2s]"></div>
+                        <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse [animation-delay:0.4s]"></div>
+                      </div>
+                      <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-tighter min-w-[140px]">
+                        {loadingStatus}
+                      </span>
+                    </div>
+                    {/* Dynamic line animation */}
+                    <div className="h-1 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500 animate-shimmer" style={{ width: '40%', background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.5), transparent)' }}></div>
+                    </div>
                   </div>
+                  {/* Subtle glow effect */}
+                  <div className="absolute -inset-1 bg-blue-500/10 blur-xl -z-10 rounded-full"></div>
                 </div>
+                <style>{`
+                  @keyframes shimmer {
+                    from { transform: translateX(-100%); }
+                    to { transform: translateX(300%); }
+                  }
+                  .animate-shimmer {
+                    animation: shimmer 1.5s infinite linear;
+                  }
+                `}</style>
               </div>
             )}
             <div ref={messagesEndRef} />

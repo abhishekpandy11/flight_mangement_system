@@ -252,7 +252,7 @@ export default function FlightSearch() {
         {/* Gradient overlay */}
         <div
           className="absolute inset-0"
-          style={{ background: "linear-gradient(135deg, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.15) 50%, transparent 100%)" }}
+          style={{ background: "linear-gradient(to bottom, transparent 0%, rgba(15,23,42,0.1) 40%, rgba(15,23,42,0.5) 100%)" }}
         />
 
         {/* Content */}
