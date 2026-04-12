@@ -284,28 +284,28 @@ export default function FlightSearch() {
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Explore</h4>
               <ul className="space-y-4 text-sm">
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Popular Routes</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Partner Airlines</Link></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Popular Routes</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Partner Airlines</button></li>
                 <li><Link to="/hotels" className="hover:text-blue-400 transition-colors">Hotels & Stays</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Smart Travel Tips</Link></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Smart Travel Tips</button></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Support</h4>
               <ul className="space-y-4 text-sm">
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Help Center</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Booking Guide</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Refund Policy</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Contact Us</Link></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Help Center</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Booking Guide</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Refund Policy</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Contact Us</button></li>
               </ul>
             </div>
             <div>
               <h4 className="text-white font-bold mb-6 uppercase text-xs tracking-widest">Legal</h4>
               <ul className="space-y-4 text-sm">
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
-                <li><Link to="/" className="hover:text-blue-400 transition-colors">Security</Link></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Terms of Service</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Privacy Policy</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Cookie Policy</button></li>
+                <li><button type="button" className="hover:text-blue-400 transition-colors">Security</button></li>
               </ul>
             </div>
           </div>
