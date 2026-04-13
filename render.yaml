@@ -4,7 +4,7 @@ services:
     name: skyroute-backend
     runtime: docker
     dockerContext: ./backend
-    dockerfile: Dockerfile
+    dockerfilePath: ./backend/Dockerfile
     plan: free
     envVars:
       - key: DATABASE_URL
