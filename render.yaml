@@ -3,7 +3,7 @@ services:
     name: skyroute-frontend
     runtime: static
     buildCommand: "npm install && npm run build"
-    publishDir: "build"
+    staticPublishDir: "build"
     rootDir: "frontend"
     envVars:
       - key: REACT_APP_API_URL
