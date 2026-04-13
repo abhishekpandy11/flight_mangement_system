@@ -12,9 +12,9 @@ allowed_origins = [
     FRONTEND_URL,
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://flight-mangement-system-gzps.vercel.app",
+    "https://flight-management-system-gzps.vercel.app",
     # Also allow any Vercel preview deployments for this project
-    "https://flight-mangement-system.vercel.app",
+    "https://flight-management-system.vercel.app",
 ]
 
 # Also allow any custom ALLOWED_ORIGINS env var (comma-separated)

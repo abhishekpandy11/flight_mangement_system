@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: skyroute-frontend
+    runtime: static
+    buildCommand: "npm install && npm run build"
+    publishDir: "build"
+    rootDir: "frontend"
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://flight-management-system.onrender.com
+    routes:
+      - type: rewrite
+        source: "/*"
+        destination: "/index.html"

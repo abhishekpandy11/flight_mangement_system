@@ -21,8 +21,9 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
 
 
-    class Config:
-        env_file = [".env", "../.env"]
-        extra = "ignore"
+    model_config = {
+        "env_file": [".env", "../.env"],
+        "extra": "ignore"
+    }
 
 settings = Settings()
