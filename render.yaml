@@ -1,7 +1,7 @@
 services:
   # Backend API Service
   - type: web
-    name: skyroute-backend
+    name: flight-mangement-system
     runtime: docker
     dockerContext: ./backend
     dockerfilePath: ./backend/Dockerfile
@@ -49,7 +49,7 @@ services:
     rootDir: "frontend"
     envVars:
       - key: REACT_APP_API_URL
-        value: https://skyroute-backend.onrender.com
+        value: https://flight-mangement-system.onrender.com
     routes:
       - type: rewrite
         source: "/*"
