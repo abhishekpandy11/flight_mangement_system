@@ -19,20 +19,25 @@ const ChatWidget = () => {
   const messagesEndRef = useRef(null);
 
   // Dragging State
-  const [position, setPosition] = useState({ x: window.innerWidth - 410, y: window.innerHeight - 80 });
+  const [position, setPosition] = useState({ x: 1000, y: 1000 }); // Will be updated in effect
   const [isDragging, setIsDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
   const hasMovedRef = useRef(false);
   const startPosRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    // Initial position on mount to prevent SSR/early render layout shifts
+    setPosition({ x: window.innerWidth - 80, y: window.innerHeight - 90 });
+
     const handleResize = () => {
       setPosition(prev => {
-        const widgetWidth = isOpen ? 384 : 56;
-        const widgetHeight = isOpen ? 580 : 56;
+        const btnSize = 64;
+        const chatWidth = window.innerWidth < 640 ? window.innerWidth - 32 : 400;
+        const minX = isOpen ? chatWidth - btnSize : 0;
+        
         return {
-          x: Math.max(0, Math.min(prev.x, window.innerWidth - widgetWidth)),
-          y: Math.max(0, Math.min(prev.y, window.innerHeight - widgetHeight))
+          x: Math.max(minX, Math.min(prev.x, window.innerWidth - btnSize - 16)),
+          y: Math.max(0, Math.min(prev.y, window.innerHeight - btnSize - 16))
         };
       });
     };
@@ -70,11 +75,12 @@ const ChatWidget = () => {
       let newX = e.clientX - dragOffset.current.x;
       let newY = e.clientY - dragOffset.current.y;
 
-      const widgetWidth = isOpen ? 384 : 56;
-      const widgetHeight = isOpen ? 580 : 56;
+      const btnSize = 64;
+      const chatWidth = window.innerWidth < 640 ? window.innerWidth - 32 : 400;
+      const minX = isOpen ? chatWidth - btnSize : 0;
       
-      newX = Math.max(0, Math.min(newX, window.innerWidth - widgetWidth));
-      newY = Math.max(0, Math.min(newY, window.innerHeight - widgetHeight));
+      newX = Math.max(minX, Math.min(newX, window.innerWidth - btnSize - 16));
+      newY = Math.max(0, Math.min(newY, window.innerHeight - btnSize - 16));
 
       setPosition({ x: newX, y: newY });
     };
@@ -182,7 +188,7 @@ const ChatWidget = () => {
       <div className="relative flex flex-col items-end">
         {/* Chat Window - Material Glassmorphism & Watermark AI Face */}
         {isOpen && (
-          <div className="absolute bottom-[80px] right-0 w-80 sm:w-[400px] h-[550px] bg-white/20 dark:bg-slate-900/40 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl flex flex-col border border-white/30 dark:border-white/10 overflow-hidden transform-gpu animate-in fade-in slide-in-from-bottom-10 duration-500">
+          <div className="absolute bottom-[80px] right-0 w-[calc(100vw-2rem)] sm:w-[400px] h-[calc(100vh-120px)] sm:h-[550px] max-h-[600px] bg-white/20 dark:bg-slate-900/40 backdrop-blur-2xl rounded-[2.5rem] shadow-2xl flex flex-col border border-white/30 dark:border-white/10 overflow-hidden transform-gpu animate-in fade-in slide-in-from-bottom-10 duration-500" style={{ touchAction: 'auto' }}>
             
             {/* Background Watermark Face */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] dark:opacity-[0.05] overflow-hidden">
