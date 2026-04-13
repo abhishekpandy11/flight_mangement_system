@@ -1,4 +1,46 @@
 services:
+  # Backend API Service
+  - type: web
+    name: skyroute-backend
+    runtime: docker
+    dockerContext: ./backend
+    dockerfile: Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 60
+      - key: AVIATIONSTACK_API_KEY
+        sync: false
+      - key: RAPIDAPI_KEY
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: 587
+      - key: MAIL_FROM
+        sync: false
+      - key: MAIL_FROM_NAME
+        value: skyRoute
+      - key: MAIL_STARTTLS
+        value: True
+      - key: MAIL_SSL_TLS
+        value: False
+      - key: GROQ_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        value: https://skyroute-frontend.onrender.com
+
+  # Frontend Static Service
   - type: web
     name: skyroute-frontend
     runtime: static
@@ -7,7 +49,7 @@ services:
     rootDir: "frontend"
     envVars:
       - key: REACT_APP_API_URL
-        value: https://flight-management-system.onrender.com
+        value: https://skyroute-backend.onrender.com
     routes:
       - type: rewrite
         source: "/*"

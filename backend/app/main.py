@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 from app.api.routes import auth, flights, bookings, hotels, cars, chat
 import os
 
@@ -12,8 +13,9 @@ allowed_origins = [
     FRONTEND_URL,
     "http://localhost:3000",
     "http://localhost:3001",
+    "https://skyroute-frontend.onrender.com",
+    "https://flight-management-system.onrender.com",
     "https://flight-management-system-gzps.vercel.app",
-    # Also allow any Vercel preview deployments for this project
     "https://flight-management-system.vercel.app",
 ]
 
@@ -34,6 +36,8 @@ app.add_middleware(
     allow_headers=["*"],
     expose_headers=["*"],
 )
+
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 app.include_router(auth.router, prefix="/auth")
 app.include_router(flights.router, prefix="/flights")
